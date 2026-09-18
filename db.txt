@@ -1,0 +1,40 @@
+create database textile_db;
+use textile_db;
+
+CREATE TABLE parties (
+    party_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    party_name VARCHAR(150) NOT NULL,
+    party_type VARCHAR(50),
+    phone VARCHAR(20),
+    address TEXT,
+    gst_no VARCHAR(30),
+    status BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE tickits (
+    tickit_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    party_id bigint NOT NULL,
+    tickit_name VARCHAR(100) NOT NULL UNIQUE,
+    active BOOLEAN DEFAULT TRUE,
+    
+    foreign key (party_id) references parties(party_id)
+);
+
+CREATE TABLE yarn_counts (
+    count_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	tickit_id BIGINT,
+    count_yarn VARCHAR(256) NOT NULL ,
+    
+    active BOOLEAN DEFAULT TRUE,
+    foreign key (tickit_id) references tickits(tickit_id)
+);
+
+CREATE TABLE sizing_units (
+    sizing_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    sizing_name VARCHAR(100) NOT NULL UNIQUE,
+    party_id BIGINT,
+    active BOOLEAN DEFAULT TRUE,
+
+    CONSTRAINT fk_sizing_party
+        FOREIGN KEY (party_id) REFERENCES parties(party_id)
+);
